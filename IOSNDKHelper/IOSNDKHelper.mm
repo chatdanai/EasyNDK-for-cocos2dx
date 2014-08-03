@@ -16,7 +16,7 @@ static NSObject *helperInstance = nil;
 
 void IOSNDKHelperImpl::SetNDKReciever(void *reciever)
 {
-    helperInstance = (NSObject*)reciever;
+    helperInstance = (__bridge NSObject*)reciever;
 }
 
 NSObject *getHelperInstance()
@@ -68,9 +68,9 @@ void IOSNDKHelperImpl::RecieveCPPMessage(json_t *methodName, json_t *methodParam
         free(jsonStrLocal);
         
         NSData *jsonData = [methodParamsJson dataUsingEncoding:NSUTF8StringEncoding];
-        [methodParamsJson release];
+        //[methodParamsJson release];
         methodParamsJson = nil;
-    
+        
         //parse out the json data
         NSError* error = nil;
         NSDictionary* json = [NSJSONSerialization
@@ -127,7 +127,7 @@ void IOSNDKHelperImpl::RecieveCPPMessage(json_t *methodName, json_t *methodParam
             return;
         }
         
-        [jsonPrmsString release];
+        //[jsonPrmsString release];
         jsonPrmsString = nil;
     }
     
@@ -140,6 +140,6 @@ void IOSNDKHelperImpl::RecieveCPPMessage(json_t *methodName, json_t *methodParam
 
 + (void) SetNDKReciever:(NSObject*)reciever
 {
-    IOSNDKHelperImpl::SetNDKReciever((void*)reciever);
+    IOSNDKHelperImpl::SetNDKReciever((__bridge void*)reciever);
 }
 @end
